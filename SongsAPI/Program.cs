@@ -1,4 +1,11 @@
 
+
+
+using Scalar.AspNetCore;
+using SongsAPI.Data;
+using SongsAPI.Controllers;
+using Microsoft.EntityFrameworkCore;
+
 namespace SongsAPI
 {
     public class Program
@@ -13,11 +20,15 @@ namespace SongsAPI
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            builder.Services.AddDbContext<SongsDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                app.MapScalarApiReference();
+
                 app.MapOpenApi();
             }
 
